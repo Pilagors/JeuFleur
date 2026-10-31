@@ -1,0 +1,51 @@
+= Nom de la fonctionnalité
+
+// Copier ce fichier dans pages/fonctionnalites/<nom>.adoc et l'ajouter à nav.adoc.
+// Le pourquoi va ici ; le comment va dans le code (commentaires ##).
+
+*État* : en cours | faite | à revoir +
+*Branche* : `nom-de-la-branche` +
+*Game design* : xref:gdd/boucle-gameplay.adoc[] (page GDD liée)
+
+== Résumé
+
+Ce que fait la fonctionnalité, en deux ou trois phrases, du point de vue du joueur.
+
+== Comportement
+
+Les règles de gameplay implémentées, et les valeurs importantes (qui renvoient aux `.tres` plutôt que de les recopier).
+
+== Réseau
+
+[cols="1,2"]
+|===
+| Qui décide | hôte (`multiplayer.is_server()`) ou propriétaire (`is_multiplayer_authority()`)
+| RPC | `request_xxx()` client → hôte, `xxx()` hôte → tous
+| Répliqué | propriétés synchronisées par `MultiplayerSynchronizer`, nodes créés par `MultiplayerSpawner`
+|===
+
+== Fichiers
+
+[cols="1,2"]
+|===
+| Fichier | Rôle
+
+| {url-code}/entities/xxx/xxx.gd[xxx.gd]
+| Script principal
+
+| {url-code}/entities/xxx/xxx.tscn[xxx.tscn]
+| Scène
+
+| {url-code}/data/xxx/xxx.tres[xxx.tres]
+| Données
+|===
+
+== Tester
+
+. Lancer 2 instances (voir xref:demarrage.adoc#_tester_le_multijoueur[Démarrage]).
+. Ce qu'il faut faire, côté hôte puis côté client.
+. Ce qu'on doit observer, et le cas de départ d'un joueur.
+
+== Limites connues
+
+Ce qui n'est pas encore géré.

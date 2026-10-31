@@ -1,0 +1,25 @@
+= Structure d'une partie
+
+Une partie suit le cycle : hub → émission → atterrissage → retour au hub.
+
+== 1. Le hub : la station orbitale « Serre »
+
+Station vivante mais délabrée, base entre les runs.
+
+* *Salle hydroponique* : on y fait pousser et améliorer la fleur (pots, greffes, mutations). Voir xref:gdd/fleurs-economie.adoc[].
+* *Vestiaire* : choix des combinaisons et cosmétiques (rétention, contenu stream).
+* *Terminal de missions* : vieil écran CRT avec un clavier qui claque.
+
+== 2. Choisir une « émission »
+
+Le terminal capte des *signaux de détresse* venant de stations abandonnées. Chaque signal est une mission.
+
+* Le signal affiche en partie l'objectif, la planète et la menace, mais avec du bruit radio. *Plus le signal est brouillé, plus la mission est risquée et mieux elle paie.*
+* Les joueurs écoutent un message audio fragmenté pour deviner ce qui les attend (ex. quelqu'un qui chuchote « …ne parlez pas… »). Moment de tension avant le run.
+* Remplace un simple menu par du lore jouable.
+
+== 3. L'atterrissage
+
+* Cinématique courte en navette/capsule : turbulences, lumières qui clignotent puis s'éteignent en entrant dans le champ d'interférence. Tout le monde ouvre sa fleur pour la première fois.
+* La navette reste au point d'atterrissage et sert de *zone d'extraction*. Son décollage fait du bruit et peut attirer les monstres : rush final.
+* *L'oxygène sert de timer de run*, cohérent avec les 5 à 10 minutes visées.

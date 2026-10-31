@@ -1,0 +1,88 @@
+= Git
+
+Installation et clonage : voir xref:demarrage.adoc[]. Règles de commit et de nommage : voir xref:guides/conventions.adoc[].
+
+== Les branches
+
+----
+main  ←  dev  ←  ma-fonctionnalite
+----
+
+* `main` ne reçoit que des pull requests venant de `dev`.
+* `dev` reçoit les pull requests des branches de fonctionnalité.
+* `main` et `dev` sont protégées : personne ne pousse directement dessus.
+* Une branche par fonctionnalité, créée depuis `dev`, qui correspond à une case de la xref:roadmap.adoc[].
+
+== Travailler sur une fonctionnalité
+
+Partir d'un `dev` à jour :
+
+[source,bash]
+----
+git switch dev
+git pull
+git switch -c ma-fonctionnalite
+----
+
+Commiter au fur et à mesure (avec les `.import` / `.uid` associés) :
+
+[source,bash]
+----
+git add entities/player/
+git commit -m "feat: déplacement du joueur"
+----
+
+Envoyer la branche sur GitHub (le `-u` n'est utile que la première fois) :
+
+[source,bash]
+----
+git push -u origin ma-fonctionnalite
+----
+
+Puis ouvrir une pull request vers `dev` sur GitHub.
+
+== Relire une pull request
+
+La personne qui relit récupère la branche et teste en local, surtout pour les scènes qu'on ne peut pas juger depuis GitHub :
+
+[source,bash]
+----
+git fetch
+git switch ma-fonctionnalite
+----
+
+Pour une fonctionnalité multijoueur, tester avec au moins 2 instances, en hôte et en client (voir xref:demarrage.adoc#_tester_le_multijoueur[Démarrage]).
+
+== Mettre sa branche à jour avec `dev`
+
+Si `dev` a avancé pendant qu'on travaillait :
+
+[source,bash]
+----
+git fetch
+git rebase origin/dev
+----
+
+En cas de conflit, Git s'arrête : corriger les fichiers, puis `git add` et `git rebase --continue` (ou `git rebase --abort` pour tout annuler).
+
+Le rebase réécrit l'historique de la branche, donc le push suivant doit être forcé :
+
+[source,bash]
+----
+git push --force-with-lease
+----
+
+WARNING: `--force-with-lease` ne se fait que sur *sa propre branche de fonctionnalité*. Jamais sur `main`, jamais sur `dev`, jamais sur une branche sur laquelle quelqu'un d'autre travaille : on effacerait ses commits. Sur une branche partagée, utiliser `git merge origin/dev` au lieu du rebase, qui ne demande pas de push forcé.
+
+== Git LFS
+
+* Les extensions suivies par LFS sont listées dans `.gitattributes`.
+* Nouveau type de fichier binaire : `git lfs track "*.ext"` *avant* de le commiter, et commiter le `.gitattributes` modifié.
+* Un asset qui ne s'importe pas dans Godot (fichier texte de quelques lignes à la place du vrai fichier) : lancer `git lfs pull`.
+
+== Spécificités Godot
+
+* Déplacer et renommer les fichiers *depuis le dock FileSystem de Godot*, jamais depuis l'explorateur ni avec `git mv`.
+* Commiter les `.import` et `.uid` avec leur fichier.
+* Les `.tscn` se fusionnent mal : ne pas modifier une scène sur laquelle quelqu'un d'autre travaille, et préférer plusieurs petites scènes.
+* `.godot/` et `export_presets.cfg` ne sont jamais commités (déjà dans `.gitignore`).

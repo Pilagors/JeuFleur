@@ -1,0 +1,51 @@
+= Fleurs et économie
+
+== Principe
+
+L'argent gagné en mission sert surtout à acheter des graines et à faire pousser de nouvelles fleurs dans la salle hydroponique du hub.
+Partir en mission sans fleur, c'est comme aller dans Lethal Company sans lampe : possible, mais très dur.
+
+== Comment une fleur se perd
+
+* Le joueur meurt : sa fleur reste au sol sur place. Les coéquipiers peuvent la ramasser, ce qui crée un objectif de sauvetage improvisé.
+* Les pétales tombent à zéro : la fleur fane.
+* Un monstre l'écrase ou l'arrache.
+
+== Faire pousser au hub
+
+* On achète des graines avec l'argent des missions.
+* Une fleur met un certain nombre de *missions* à pousser (ex. prête dans 2 missions), pas du temps réel. Il faut anticiper et planter de la réserve même quand tout va bien.
+* La pousse peut être accélérée avec de l'*engrais* (autre dépense).
+
+== Filet de sécurité
+
+Risque à éviter : perdre ses fleurs → gagner moins → ne plus pouvoir racheter → partie foutue. Parades :
+
+* *Bourgeon de secours gratuit* : petite fleur faible (peu de lumière, peu de pétales), toujours disponible.
+* *Missions faciles peu payées* : signal clair et peu dangereux pour se refaire.
+* *Partir sans fleur reste possible* : un joueur avance dans le noir, guidé à la voix par les coéquipiers qui éclairent.
+
+== Types de fleurs
+
+NOTE: Les noms sont des placeholders, et les valeurs sont à équilibrer.
+
+[cols="2,2,2,2,3,2"]
+|===
+| Nom | Lumière | Bruit / discrétion | Pétales / durée de vie | Particularité | Coût / pousse
+
+| Bourgeon de secours | Très faible, petit halo | Discrète | Peu de pétales | Gratuit, toujours disponible au hub | Gratuit, immédiat
+| Fleur commune | Halo moyen | Normale | Normale | Fleur de référence pour équilibrer les autres | Bas, 1 à 2 missions
+| Fleur éclatante | Très forte, grand halo | Bruyante, attire vite les monstres | Normale | Idéale pour faire fuir le petit alien | Moyen
+| Fleur feutrée | Faible | Très discrète | Fane vite | Pour les joueurs éclaireurs | Moyen
+| Fleur vivace | Moyenne | Normale | Régénère ses pétales lentement | Moins dépendante des relais bio | Élevé, longue pousse
+| Fleur phare | En cône (portée longue, champ étroit) | Normale | Normale | Voir loin sans éclairer autour de soi | Élevé
+|===
+
+== Ajouter une fleur
+
+include::partial$ajouter-fleur.adoc[]
+
+== Pour le prototype
+
+Argent gagné en mission, une graine à acheter, une fleur commune qui pousse en X missions, et le bourgeon de secours.
+Les autres espèces viendront quand la boucle sera validée.

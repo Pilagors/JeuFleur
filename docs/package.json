@@ -1,0 +1,11 @@
+{
+  "name": "jeufleur-docs",
+  "private": true,
+  "scripts": {
+    "doc": "antora antora-playbook.yml"
+  },
+  "devDependencies": {
+    "@antora/cli": "3.2.2",
+    "@antora/site-generator": "3.2.2"
+  }
+}

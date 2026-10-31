@@ -1,0 +1,16 @@
+# Génère le site de la doc en local : voir la page "Démarrage" de la doc.
+site:
+  title: JeuFleur
+  start_page: jeufleur::index.adoc
+content:
+  sources:
+  # Le dépôt lui-même : Antora lit les fichiers de la copie de travail (modifs non commitées comprises).
+  - url: ..
+    branches: HEAD
+    start_path: docs
+ui:
+  bundle:
+    url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+output:
+  dir: ./build/site

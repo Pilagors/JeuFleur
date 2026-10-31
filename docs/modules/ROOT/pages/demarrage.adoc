@@ -1,0 +1,65 @@
+= Démarrage
+
+== Installer
+
+. *Godot 4.7.2*, version standard (GDScript), *pas* la version .NET. Toute l'équipe utilise exactement cette version.
+. *Git* et *Git LFS* (https://git-lfs.com/). Les fichiers binaires (images, modèles 3D, audio, polices) sont stockés avec LFS.
+. *Node.js* en version LTS (https://nodejs.org), uniquement pour générer le site de la doc (voir <<doc>>). Node installe aussi `npm`, l'outil qui télécharge Antora.
+
+== Cloner
+
+Activer LFS, une seule fois par machine :
+
+[source,bash]
+----
+git lfs install
+----
+
+Cloner le dépôt :
+
+[source,bash]
+----
+git clone https://github.com/Pilagors/JeuFleur.git
+----
+
+TIP: Si un asset ne s'importe pas dans Godot, c'est que LFS n'était pas actif au moment du clone. Lancer `git lfs pull` pour récupérer les fichiers.
+
+== Lancer
+
+. Ouvrir Godot 4.7.2 → *Importer* → choisir le fichier `project.godot` à la racine du dépôt.
+. Lancer le projet avec *F5*. La scène principale est `res://main/main.tscn`.
+
+== Tester le multijoueur
+
+Toute fonctionnalité multijoueur se teste avec au moins deux instances du jeu sur la même machine.
+
+. Menu *Debug → Customize Run Instances…*
+. Cocher *Enable Multiple Instances* et régler le nombre d'instances (2 au minimum).
+. Lancer avec *F5* : Godot ouvre une fenêtre par instance. L'une héberge, les autres rejoignent.
+
+À vérifier à chaque fois :
+
+* tester en tant qu'hôte *et* en tant que client : beaucoup de bugs n'apparaissent que côté client ;
+* le départ d'un client ne fait rien planter ;
+* le départ de l'hôte ne fait rien planter chez les clients.
+
+[#doc]
+== Voir la doc en local
+
+Les pages sont des fichiers `.adoc` dans `docs/modules/ROOT/`. Pour les lire comme un site, avec le menu et les liens :
+
+[source,bash]
+----
+cd docs
+npm install
+npm run doc
+----
+
+Puis ouvrir `docs/build/site/jeufleur/index.html` dans un navigateur.
+
+* `npm install` ne sert que la première fois (et quand `package.json` change). Ensuite, `npm run doc` suffit.
+* Le site reprend les fichiers tels qu'ils sont sur le disque, même pas encore commités.
+* `docs/build/` et `docs/node_modules/` ne sont pas versionnés.
+
+Pour écrire une page, l'extension *AsciiDoc* de VS Code affiche un aperçu en direct.
+GitHub affiche aussi les `.adoc`, mais sans les `include::` ni les liens entre pages.

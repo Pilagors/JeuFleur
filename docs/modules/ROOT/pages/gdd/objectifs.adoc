@@ -1,0 +1,19 @@
+= Objectifs
+
+NOTE: Liste d'idées, aucune n'est encore validée en prototype. Prochaine étape : en retenir 3 à 5 et les tester.
+
+Revive via cuve de clonage::
+Du scrap, mais avec un but précis : trouver 4 items pour réparer une *cuve de clonage* de la station, qui permet de faire revenir un coéquipier mort. Il est « réimprimé », avec possibilité de bugs drôles (voix pitchée, taille différente…). Très REPO, très clip TikTok.
+
+Relais bio (ex-totems)::
+À chaque niveau, il faut actionner un certain nombre de *jardinières nutritives / relais bio* laissés par l'ancienne colonie. On y « plante » la fleur quelques secondes pour la réactiver, ce qui l'oblige à rester ouverte (donc vulnérable), puis elle récupère les pétales perdus pendant la partie.
+Les joueurs ont un *terminal de poignet analogique* (aiguilles ou LED mécaniques, qui fonctionne malgré l'interférence) pour voir combien de relais sont actionnés.
+
+Boîte noire::
+Récupérer la boîte noire de la station. Elle émet un bip en permanence, donc fait du bruit pendant tout le trajet retour.
+
+Relancer le réacteur::
+Activation par étapes dans plusieurs modules.
+
+Escorte de spécimen::
+Ramener un spécimen de fleur rare jusqu'à la navette.

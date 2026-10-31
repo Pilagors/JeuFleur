@@ -1,0 +1,62 @@
+= Conventions
+
+== Code
+
+[cols="1,2,2"]
+|===
+| Élément | Règle | Exemple
+
+| Fichiers et dossiers | Anglais, snake_case | `network_manager.gd`, `player.tscn`
+| Classes et nodes | Anglais, PascalCase | `class_name FlowerData`, node `Player`
+| Variables | Anglais, snake_case, *toujours typées* | `var nb_petals: int`
+| Constantes | Anglais, SNAKE_CASE majuscule, typées | `const MAX_PLAYERS: int = 4`
+| Fonctions | Anglais, snake_case, *type de retour obligatoire* | `func get_item(i: int) -> Item`
+| Commentaires | Français, seulement si nécessaire à la compréhension |
+|===
+
+* Ne jamais nommer une méthode `get()`, `set()` ou autre nom déjà défini sur `Object` (ex. `Inventory.get_item()`, pas `Inventory.get()`).
+* Fonctions sans retour : `-> void`.
+
+Fichiers en snake_case et non en camelCase : c'est ce que recommande le guide de style officiel de Godot, et Windows ne distingue pas les majuscules dans les noms de fichiers, ce qui provoque des bugs à l'export.
+
+== Où écrire quoi
+
+* *Le pourquoi* (règles de jeu, choix, décisions) va dans cette doc.
+* *Le comment* va dans le code, en commentaires de documentation `##` au-dessus des classes, fonctions et variables. Godot les affiche dans l'aide intégrée.
+* Une information n'est écrite qu'à un seul endroit ; ailleurs, on met un lien.
+* Tout changement de comportement met à jour la doc *dans le même commit*.
+
+== Commits
+
+En français, au format `type: description`. Décrire la fonctionnalité dans le message (`git citool` aide à préparer un commit).
+
+[cols="1,3"]
+|===
+| Type | Usage
+
+| `feat` | Nouvelle fonctionnalité (`feat: arrosage des fleurs`)
+| `fix` | Correction de bug
+| `refactor` | Réorganisation sans changement de comportement
+| `assets` | Ajout ou modification d'assets
+| `config` | Paramètres du projet Godot, `.gitignore`, `.gitattributes`, toujours dans un commit séparé
+| `docs` | Documentation seule
+| `chore` | Corvées qui ne sont ni du jeu ni de la config : outils, mise à jour d'Antora (`package.json` de la doc)…
+|===
+
+Référence : https://blog.stephane-robert.info/docs/developper/conventional-commits/[Conventional Commits (Stéphane Robert)].
+
+== Branches et pull requests
+
+* Branches en français, kebab-case, avec le nom de la fonctionnalité (`socle-reseau`).
+* Une personne est désignée pour relire chaque pull request. Pour voir les scènes, elle récupère la branche et teste en local avant de commenter.
+
+Le détail du flux est dans xref:guides/git.adoc[].
+
+== Projet Godot
+
+* Déplacer et renommer les fichiers *uniquement depuis le dock FileSystem de Godot*, jamais depuis l'explorateur : sinon les références entre fichiers cassent.
+* Commiter les fichiers `.import` et `.uid` avec leur fichier associé : ils contiennent les réglages d'import et les identifiants utilisés par les scènes.
+* Modifier la config via *Projet → Paramètres du projet*, pas à la main dans `project.godot`, et dans un commit `config:` séparé.
+* Ne pas modifier un `.tscn` sur lequel quelqu'un d'autre travaille. Préférer plusieurs petites scènes.
+* Ne jamais commiter `.godot/` ni `export_presets.cfg`.
+* Nouveau type de fichier binaire : l'ajouter à LFS (`git lfs track "*.ext"`) *avant* de le commiter.

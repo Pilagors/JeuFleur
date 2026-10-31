@@ -1,0 +1,30 @@
+= Niveaux
+
+== Approche choisie
+
+Génération procédurale de niveaux courts (5 à 10 minutes par run) à partir de modules (pièces et couloirs) assemblés, plutôt qu'une grande map à explorer type scrap.
+
+== Modules de station abandonnée
+
+[cols="1,3"]
+|===
+| Module | Ambiance / gameplay
+
+| Hydroponie | Végétation qui a envahi la zone, sons organiques, cachette idéale pour le venom
+| Cryogénie | Capsules alignées, certaines ouvertes, de la buée au sol
+| Quartiers de l'équipage | Objets personnels, journaux audio pour le lore
+| Salle des machines | Vacarme ambiant qui masque vos bruits, mais aussi ceux du monstre
+| Labo | Échantillons fragiles, verre qui casse et fait du bruit
+| Sas / coursives extérieures | Passages en apesanteur où aucun son ne porte : zone sûre mais lente
+| Salle de contrôle | Lieu de l'objectif final, écrans morts
+|===
+
+== Ce qui varie à chaque run
+
+* *Layout* : assemblage aléatoire de modules.
+* *Objectif* : tiré parmi les xref:gdd/objectifs.adoc[objectifs possibles].
+* *Monstre(s) présent(s)* : combinaison selon la difficulté.
+* *Thème visuel et sonore* du set de modules, pour renouveler l'impression sans multiplier les assets.
+* *Modificateurs de module*, ex. un module *dépressurisé* où le son se propage beaucoup moins : le même décor change de règles sans nouvel asset.
+
+NOTE: Restent à définir : la taille du pool de modules nécessaire pour éviter la répétition, les règles de placement (éviter les culs-de-sac frustrants, garantir un chemin vers l'objectif), et comment varier sans complexifier la génération (ex. modificateurs de run plutôt que des layouts totalement uniques).
