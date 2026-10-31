@@ -4,13 +4,7 @@
 
 * Échelle : 1 unité Blender = 1 mètre dans Godot.
 * Appliquer les transformations avant l'export (*Ctrl+A → All Transforms*), sinon l'échelle et la rotation arrivent faussées.
-* Exporter en *glTF binaire (`.glb`)*, le format conseillé. Le `.blend` source peut aussi être versionné (il est en LFS).
-
-== Ajouter le fichier au projet
-
-. Copier le `.glb` dans `assets/models/` (un sous-dossier par catégorie si besoin).
-. Revenir dans Godot : il importe le fichier automatiquement et crée un `.glb.import` à côté.
-. Commiter le `.glb` *et* son `.import`. Le `.glb` passe automatiquement par Git LFS.
+* Exporter en *glTF* (`.glb` de préférence, ou `.gltf`). Le `.blend` source peut aussi être versionné (il est en LFS).
 
 == Choisir le corps physique
 
@@ -18,68 +12,87 @@
 |===
 | Type d'objet | Corps | Exemples
 
+| Personnage
+| `CharacterBody3D`
+| Joueur, monstres
+
 | Objet qui subit la physique (tombe, se pousse, se ramasse)
 | `RigidBody3D`
 | Items, caisses, boîte noire
 
-| Objet fixe avec collision
+| Objet fixe ou structure, avec collision
 | `StaticBody3D`
 | Murs, sols, consoles, portes de module
-
-| Personnage contrôlé par du code
-| `CharacterBody3D`
-| Joueur, monstres
 
 | Décor sans collision
 | Pas de corps, juste le `MeshInstance3D`
 | Câbles, petits détails, lumières décoratives
 |===
 
-Selon xref:architecture.adoc[], la racine de la scène d'une entité est le corps lui-même, et le modèle importé est instancié en enfant :
+Et la forme de collision :
 
-----
-Item (RigidBody3D)          ← racine, script item.gd
-├── Model (instance du .glb)
-└── CollisionShape3D
-----
-
-Penser à régler les couches de collision du corps (`world`, `player`, `item`, `monster`, `interactable`, voir xref:architecture.adoc#_input_map_et_couches_de_collision[Architecture]).
-
-== Générer la collision
-
-=== Depuis un MeshInstance3D
-
-. Sélectionner le `MeshInstance3D` dans la scène.
-. Menu *Mesh* (en haut de la vue 3D) → *Create Collision Shape…*
-. Placement *Sibling* (la forme est créée à côté du mesh, sous le corps).
-. Type selon le corps :
-+
 [cols="1,3"]
 |===
-| Type | Quand l'utiliser
-
-| *Single Convex*
-| `RigidBody3D` et `CharacterBody3D` : une seule forme convexe, rapide.
-
-| *Multiple Convex*
-| Objet mobile de forme creuse ou en L, quand une seule forme convexe est trop grossière.
+| Forme | Quand l'utiliser
 
 | *Trimesh*
-| `StaticBody3D` uniquement : collision exacte, mais lente et interdite sur un corps qui bouge.
+| Collision exacte, qui suit tous les détails. Lente, et réservée aux `StaticBody3D` : interdite sur un corps qui bouge.
+
+| *Single Convex*
+| Une seule forme simplifiée. Pour les `RigidBody3D` et `CharacterBody3D`.
+
+| *Decompose Convex* (ou *Multiple Convex*)
+| Entre les deux : plusieurs formes convexes, pour un objet mobile creux ou en L.
 |===
 
-Pour un objet simple, une forme primitive (`BoxShape3D`, `CapsuleShape3D`, `SphereShape3D`) ajoutée à la main est encore plus légère.
+Pour un objet simple, une forme primitive (`BoxShape3D`, `CapsuleShape3D`, `SphereShape3D`) est encore plus légère.
 
-=== Depuis la fenêtre d'import
+Selon xref:architecture.adoc[], la racine d'une scène d'entité (personnage, item, monstre) est le corps lui-même.
 
-Double-cliquer sur le `.glb` dans le dock FileSystem ouvre *Advanced Import Settings*.
-Sur un mesh, la section *Physics* permet de cocher *Generate*, puis de choisir le *Body Type* (Static, Dynamic, Area) et le *Shape Type*.
-Cliquer sur *Reimport* pour appliquer. Ces réglages sont enregistrés dans le `.import`, d'où l'importance de le commiter.
+== Importer le fichier
+
+. Glisser le `.glb` / `.gltf` dans `assets/models/` (un sous-dossier par catégorie si besoin). Godot l'importe et crée un `.import` à côté.
+. Sélectionner le fichier dans le dock FileSystem.
+. Ouvrir l'onglet *Import* (à côté de l'onglet *Scène*), puis cliquer sur *Avancé…*.
+
+=== Dans la fenêtre des paramètres d'import avancés
+
+Personnage, item, monstre (entités)::
+. Sélectionner le node racine de la scène, puis, dans le panneau de droite, choisir le *Type de racine* d'après le tableau (`CharacterBody3D`, `RigidBody3D`).
+. Si une animation *Idle* ou de *marche* existe, la sélectionner et régler sa boucle (*Loop Mode*) sur *Linear*.
+. Ne pas activer *Physique* sur les meshes : cela créerait un second corps sous la racine. La forme de collision s'ajoute dans la scène héritée (voir plus bas).
+
+Structure, objet fixe::
+. Sélectionner le `MeshInstance3D` qui doit recevoir une collision.
+. Activer *Générer → Physique*.
+. Dans *Physique*, choisir le *Type de corps* (Static) et le *Type de forme* d'après les tableaux.
+
+Quand tout est réglé, cliquer sur *Réimporter*.
+
+IMPORTANT: Chaque réglage d'import qui vous a semblé important doit être expliqué dans cette page, pour la prochaine fois. Les réglages eux-mêmes sont enregistrés dans le `.import` : le commiter avec le modèle.
+
+== Créer la scène de l'objet
+
+. Clic droit sur le modèle dans le dock FileSystem → *Nouvelle scène héritée*.
+. Vérifier que le node racine est bien le type choisi à l'import.
+. Pour une entité : ajouter la forme de collision. Sélectionner le `MeshInstance3D` → menu *Mesh* (en haut de la vue 3D) → *Create Collision Shape…* → placement *Sibling*, type d'après le tableau.
+. Régler les couches de collision du corps (`world`, `player`, `item`, `monster`, `interactable`, voir xref:architecture.adoc#_input_map_et_couches_de_collision[Architecture]).
+. Enregistrer la scène dans le dossier de l'entité, avec son script : par exemple `entities/items/black_box/black_box.tscn`.
+
+----
+BlackBox (RigidBody3D)      ← racine, type choisi à l'import
+├── Mesh (MeshInstance3D)
+└── CollisionShape3D        ← ajoutée dans la scène héritée
+----
+
+== Utiliser l'objet dans une autre scène
+
+. Ouvrir la scène où placer l'objet.
+. Clic droit sur la scène de l'objet dans le dock FileSystem → *Instancier*, ou la glisser dans la vue 3D.
 
 == Attacher un objet à un os
 
 Pour suivre une partie animée du modèle (la caméra sur la tête du joueur, un objet dans la main) :
 
-. Ouvrir le `.glb` en scène héritée (*clic droit → New Inherited Scene*) ou passer l'instance en *Editable Children*.
-. Ajouter un `BoneAttachment3D` en enfant du `Skeleton3D`, et choisir l'os dans *Bone Name*.
+. Dans la scène héritée, ajouter un `BoneAttachment3D` en enfant du `Skeleton3D`, et choisir l'os dans *Bone Name*.
 . Placer la caméra (ou l'objet) en enfant du `BoneAttachment3D`.

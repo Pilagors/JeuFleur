@@ -74,6 +74,49 @@ git push --force-with-lease
 
 WARNING: `--force-with-lease` ne se fait que sur *sa propre branche de fonctionnalité*. Jamais sur `main`, jamais sur `dev`, jamais sur une branche sur laquelle quelqu'un d'autre travaille : on effacerait ses commits. Sur une branche partagée, utiliser `git merge origin/dev` au lieu du rebase, qui ne demande pas de push forcé.
 
+== Corriger un commit déjà fait
+
+Il arrive de commiter (et pousser) des fichiers qu'on modifie ensuite. Plutôt que d'empiler des commits « oubli », on corrige le commit d'origine.
+Le plus simple est l'interface graphique `git citool`.
+
+=== L'interface `git citool`
+
+* *Unstaged Changes* : les fichiers modifiés pas encore ajoutés (`git add`).
+* *Staged Changes* : les fichiers ajoutés, qui partiront dans le commit.
+* *Bloc central* : le contenu du fichier sélectionné.
+* *Panneau du bas* : le message de commit, la case *Amend Last Commit* et les boutons.
+
+Cliquer sur l'icône d'un fichier l'ajoute au commit ou l'en retire.
+Cocher *Amend Last Commit* *avant* d'ajouter les fichiers pour modifier le dernier commit au lieu d'en créer un nouveau.
+
+CAUTION: Ne jamais cliquer sur *Push* dans `git citool`. Pousser depuis le terminal, avec la commande indiquée ci-dessous.
+
+=== Corriger le dernier commit
+
+. Modifier les fichiers.
+. Ouvrir `git citool`.
+. Cocher *Amend Last Commit*.
+. Ajouter les fichiers.
+. (Optionnel) Adapter le message de commit.
+. Cliquer sur *Commit*.
+. Si le commit avait déjà été poussé : `git push --force-with-lease` (voir l'avertissement ci-dessous).
+
+=== Corriger un commit plus ancien
+
+`N` est le nombre de commits entre le commit actuel et celui à corriger (`HEAD~3` pour le 3^e^ en partant du plus récent).
+
+. Lancer `git rebase -i HEAD~N`.
+. Dans le fichier qui s'ouvre, remplacer `pick` par `e` (edit) au début de la ligne du commit à corriger.
+. Enregistrer et fermer le fichier.
+. Modifier les fichiers.
+. Ouvrir `git citool`, cocher *Amend Last Commit*, ajouter les fichiers, adapter le message si besoin, cliquer sur *Commit*.
+. Lancer `git rebase --continue`.
+. Pousser avec `git push --force-with-lease`.
+
+TIP: Si VS Code ouvre mal le fichier du rebase, lancer une fois `git config --global core.editor "code --wait"`. Il suffit ensuite de modifier le fichier, l'enregistrer et le fermer.
+
+WARNING: Corriger un commit réécrit l'historique, d'où le push forcé. Comme pour le rebase : `--force-with-lease` uniquement sur *sa propre branche de fonctionnalité*, jamais sur `main`, `dev` ou une branche partagée. Un commit déjà présent sur une de ces branches ne se corrige pas : on fait un nouveau commit `fix:`.
+
 == Git LFS
 
 * Les extensions suivies par LFS sont listées dans `.gitattributes`.
