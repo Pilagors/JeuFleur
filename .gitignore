@@ -6,3 +6,6 @@ export_presets.cfg
 *.blend1
 .DS_Store
 CLAUDE.local.md
+# Builds et site de la doc (Antora)
+build/
+node_modules/

@@ -1,0 +1,12 @@
+= Progression et méta-jeu
+
+NOTE: Section ouverte tant que la boucle de gameplay de base n'est pas validée par des tests. Ce qui suit sont des pistes inspirées du genre (Lethal Company, REPO), pas des décisions.
+
+* Achat de graines et déblocage de nouveaux types de fleurs (voir xref:gdd/fleurs-economie.adoc[]).
+* Améliorations de la fleur dans la salle hydroponique du hub : portée de lumière, discrétion, récupération plus rapide entre ouverture et fermeture, greffes, mutations.
+* Déblocage progressif de nouveaux modules de niveaux et de nouveaux monstres.
+* Base commune entre les runs : la station orbitale « Serre » (voir xref:gdd/structure-partie.adoc[]).
+* Missions mieux payées quand le signal est plus brouillé (risque / récompense).
+* Cosmétiques de combinaison au vestiaire.
+
+NOTE: L'objectif à long terme n'est pas choisi : accumulation de ressources, quota à atteindre, ou pure progression de difficulté à la Lethal Company.

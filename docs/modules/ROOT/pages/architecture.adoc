@@ -1,0 +1,131 @@
+= Architecture
+
+Cette page ne décrit que ce qui est décidé. Le pourquoi de chaque choix est dans xref:decisions.adoc[].
+
+* *Moteur* : Godot *4.7.2*, version standard GDScript (pas .NET).
+* *Renderer* : Forward+ (driver D3D12 sous Windows).
+* *Physique 3D* : Jolt Physics.
+* *Réseau* : peer-to-peer, un joueur héberge (listen server). Transport ENet d'abord, puis Steam (plugin GodotSteam).
+* *Assets binaires* : Git LFS.
+
+== Règles d'architecture
+
+. *Le multijoueur se pose avant le gameplay.* Tout le gameplay (Item, Inventory, Flower, Monster…) est écrit directement en version multi. Ne jamais écrire une version solo « à adapter plus tard ».
+. *L'hôte décide du gameplay.* Monstres, objets, fleurs, objectifs, oxygène, argent : la logique ne tourne que chez l'hôte (`multiplayer.is_server()`).
+. *Chaque joueur possède son personnage.* Déplacement et caméra sont calculés chez le joueur propriétaire (`is_multiplayer_authority()`), puis répliqués via `MultiplayerSynchronizer`.
+. *Un client demande, il ne modifie pas.* Un client envoie une RPC de demande à l'hôte ; l'hôte valide, applique, et réplique le résultat à tous.
+. *Pas de base de données.* Les définitions (fleurs, monstres, modules…) sont des Resources `.tres` dans `data/`. La sauvegarde est un fichier chez l'hôte.
+
+Le pourquoi de la règle 1 : xref:decisions.adoc#multi-des-le-depart[Décisions].
+
+Schéma commun à toutes les actions :
+
+----
+Le joueur agit → demande envoyée à l'hôte → l'hôte valide
+→ le résultat est répliqué à tous → l'hôte calcule les conséquences
+----
+
+=== Outils Godot du réseau
+
+[cols="1,2"]
+|===
+| Outil | Usage
+
+| `MultiplayerSpawner`
+| Faire apparaître chez tout le monde les entités créées par l'hôte (monstres, objets, joueurs).
+
+| `MultiplayerSynchronizer`
+| Répliquer des propriétés (position, fleur ouverte/fermée…).
+
+| `@rpc`
+| Fonctions appelées à distance : demandes d'un client à l'hôte, annonces de l'hôte.
+|===
+
+=== Autres principes
+
+* *Tout le code bas niveau réseau (ENet, Steam, peer, connexion) vit dans `NetworkManager`.* Le reste du code ne connaît que `multiplayer` et les signaux de `NetworkManager`.
+* La scène `Main` (`res://main/main.tscn`) est la scène principale du projet et ne se décharge jamais. Les niveaux (Hub, Mission) se chargent sous `Main/CurrentLevel`.
+* Les nodes Player sont nommés avec l'identifiant réseau du joueur (`str(peer_id)`).
+* La racine de chaque scène d'entité est le corps physique lui-même (`CharacterBody3D`, `RigidBody3D`), pas un `Node3D` parent.
+* Seul le joueur local lit ses entrées et active sa caméra.
+* Préférer les signaux aux références directes entre scènes éloignées.
+
+== Comment vivent les données
+
+[cols="1,2,3"]
+|===
+| Type de donnée | Exemple | Solution
+
+| Définitions statiques
+| Types de fleurs, monstres, modules, objectifs
+| Resources Godot (`.tres`) dans `data/`. Une classe (ex. `FlowerData`) dans `resources/` déclare les propriétés avec `@export`, éditables dans l'inspecteur.
+
+| État en cours de partie
+| Position, fleur ouverte ou fermée, oxygène
+| Dans les nodes, répliqué par l'hôte.
+
+| Sauvegarde
+| Argent, fleurs en pousse, déblocages
+| Un fichier dans `user://` sur la machine de l'hôte.
+|===
+
+== Arborescence
+
+----
+res://
+├── main/              scène Main (main.tscn + main.gd), jamais déchargée
+├── autoload/          scripts globaux (NetworkManager, GameManager…)
+├── data/              définitions .tres
+│   ├── flowers/
+│   ├── monsters/
+│   ├── modules/
+│   ├── objectives/
+│   └── missions/
+├── resources/         classes de données (FlowerData, MonsterData…)
+├── entities/
+│   ├── player/
+│   ├── items/
+│   ├── monsters/
+│   └── interactables/
+├── components/        briques réutilisables (noise_emitter, hearing…)
+├── levels/
+│   ├── hub/
+│   ├── mission/
+│   └── modules/
+├── objectives/
+├── ui/
+├── assets/            fichiers binaires (Git LFS)
+│   ├── audio/
+│   ├── images/
+│   ├── models/        de préférence .glb
+│   └── shaders/
+└── docs/              cette documentation (Antora)
+----
+
+Chaque entité a son dossier avec sa scène et son script ensemble (`entities/player/player.tscn` + `player.gd`).
+Les dossiers vides contiennent un `.gitkeep` pour exister dans Git.
+
+== Autoloads
+
+[cols="1,3,1"]
+|===
+| Autoload | Rôle | Étape
+
+| `NetworkManager` | Héberger, rejoindre, liste des joueurs, déconnexions | Socle réseau
+| `GameManager` | État global (menu, lobby, hub, mission, résultat), changements de scène pour tous | Socle réseau
+| `NoiseManager` | Centralise bruits et lumières pour les monstres (hôte uniquement) | Étape 2
+| `SaveManager` | Sauvegarde chez l'hôte | Étape 5
+| `VoiceManager` | Micro, proximité, radio | Étape 4
+|===
+
+Ne pas créer un autoload avant son étape.
+
+== Input Map et couches de collision
+
+* Actions : `move_forward`, `move_back`, `move_left`, `move_right`, `jump`, `sprint`, `interact`, `toggle_flower`.
+* Couches 3D Physics : 1 `world`, 2 `player`, 3 `item`, 4 `monster`, 5 `interactable`.
+
+Utiliser ces noms, ne pas en inventer d'autres sans les ajouter ici.
+Ils se configurent via *Projet → Paramètres du projet* (Input Map, et Layer Names → *3D Physics*), dans un commit `config:` séparé.
+
+NOTE: Dans le `project.godot` en cours de modification, les noms de couches ont été saisis sous *2D Render* au lieu de *3D Physics* : à refaire au bon endroit avant le commit `config:`.

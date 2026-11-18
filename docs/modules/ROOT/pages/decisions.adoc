@@ -1,0 +1,131 @@
+= Décisions
+
+Chaque décision : le contexte, ce qui est décidé, et ce que ça implique.
+Une décision qui n'est pas encore prise est marquée *à trancher*.
+
+== Réseau : peer-to-peer, un joueur héberge
+
+Contexte:: Jeu co-op de 4 joueurs maximum, comme REPO ou Lethal Company. Pas de budget ni de besoin pour un serveur.
+Décision:: Un joueur héberge la partie (listen server), les autres s'y connectent. *Ni serveur dédié, ni base de données.* Transport ENet pour commencer (réseau local), puis Steam via le plugin GodotSteam pour jouer par internet.
+Conséquences::
+* L'hôte est à la fois joueur et autorité du gameplay (voir xref:architecture.adoc[]).
+* Si l'hôte quitte, la partie s'arrête pour tout le monde.
+* Les clients demandent par RPC, l'hôte valide et réplique.
+
+== Physique : Jolt
+
+Décision:: Moteur physique 3D Jolt Physics (*Paramètres du projet → Physics → 3D*).
+Conséquences:: Toute l'équipe teste avec le même moteur physique ; ne pas le changer sans en reparler.
+
+== Assets binaires : Git LFS
+
+Contexte:: Les images, modèles 3D, sons et polices sont lourds et ne se fusionnent pas.
+Décision:: Ils sont stockés avec Git LFS (liste des extensions dans `.gitattributes`).
+Conséquences::
+* Chacun installe Git LFS et lance `git lfs install` avant de cloner.
+* Un nouveau type de fichier binaire s'ajoute à LFS (`git lfs track "*.ext"`) *avant* son premier commit.
+
+== Données : Resources `.tres`, pas de JSON ni de base de données
+
+Décision:: Les définitions (fleurs, monstres, modules, objectifs) sont des Resources Godot `.tres`. La sauvegarde est un fichier dans `user://` chez l'hôte.
+Pourquoi pas JSON::
++
+[cols="1,2,2"]
+|===
+| | `.tres` (Resource) | JSON
+
+| Typage
+| Statique : chaque propriété a un type (`@export var hp: int`)
+| Dynamique : `string`, `number`, `bool`, `array`, `object`, `null`
+
+| Types Godot
+| Tous les types `Variant` (`Vector2`, `Color`, `NodePath`, `Resource`…)
+| Aucun : conversion manuelle en `Dictionary` / `Array`
+
+| Int / float
+| Distinction native
+| Un seul type `number` (toujours float)
+
+| Structure
+| Liée à une classe `Resource` avec `@export` : validation à l'édition
+| Simple `Dictionary`, aucune vérification
+
+| Références
+| Peut référencer d'autres ressources (`ext_resource`)
+| Pas de références entre objets
+
+| Édition
+| Inspecteur Godot, autocomplétion, erreurs en temps réel
+| Éditeur de texte, aucune validation
+
+| Interopérabilité
+| Format propre à Godot
+| Standard lisible par n'importe quel langage
+|===
++
+Le seul avantage de JSON (lisible hors de Godot) ne sert pas ici : tout passe par Godot.
+
+== Pas d'assets visibles générés par IA
+
+Contexte:: La communauté du co-op horror est attentive à l'authenticité « fait main », et un style trop générique casserait l'identité du jeu.
+Décision:: Aucun visuel ni son visible ou audible par le joueur n'est généré par IA.
+Conséquences:: L'IA reste utilisable comme outil de productivité : code, prototypage, outils internes, documentation.
+
+== Pas de Docker pour l'instant
+
+Contexte:: Le jeu se lance depuis l'éditeur Godot, et il n'y a pas de serveur dédié à déployer (peer-to-peer).
+Décision:: Pas de Docker dans le projet pour l'instant.
+Conséquences:: À rediscuter seulement si un besoin apparaît (export automatisé, serveur, CI).
+
+[#multi-des-le-depart]
+== Multijoueur intégré dès le départ
+
+Contexte:: Deux positions s'opposaient. A : tout le gameplay est écrit directement en multi, dans le projet principal. B : le multi est d'abord un POC dans un projet séparé, et le gameplay est écrit en « considérant » le multi, pour l'intégrer quand la vision du jeu est stable (argument : personne n'a encore fait de jeu, mieux vaut galérer à modifier en route que trop réfléchir et abandonner).
+Décision:: *Position A* (tranché le 31/10/2026). Tout le gameplay est écrit directement en multi : c'est la règle 1 de xref:architecture.adoc[].
+Conséquences::
+* Pas de POC séparé ni de version solo « à adapter plus tard ».
+* Chaque fonctionnalité se teste avec au moins 2 instances.
+* Le risque de la position B (se décourager) reste réel : garder des étapes petites et jouables.
+
+=== Pour et contre (au moment de la décision)
+
+[cols="1,2,2"]
+|===
+| | A : multi dès le départ | B : POC à part d'abord
+
+| Coût du changement plus tard
+| *+* Rien à réécrire : chaque fonctionnalité naît avec son autorité et ses RPC.
+| *−* Passer du solo au multi oblige à revoir presque tout : qui décide, qui fait apparaître les objets, chaque changement d'état. C'est souvent plus long que de l'écrire en multi tout de suite.
+
+| Vitesse au début
+| *−* Chaque fonctionnalité demande plus de travail, et chaque test se fait avec 2 instances.
+| *+* On prototype vite, en solo, avec F5.
+
+| Courbe d'apprentissage (premier jeu)
+| *−* On apprend Godot et le réseau en même temps : risque de blocage et de découragement.
+| *+* Une difficulté à la fois. Le POC isole l'apprentissage du réseau.
+
+| Tester le fun du jeu
+| *−* Le prototype jouable arrive plus tard.
+| *+* La fleur ouverte/fermée peut être testée très tôt.
+
+| Le jeu est-il multi par nature ?
+| *+* Oui : co-op, monstre attiré par le bruit des autres, voix de proximité et radio. Le cœur du jeu se juge à plusieurs.
+| *−* Un prototype solo ne dit pas si le jeu est fun à 4.
+
+| Risque de « faux » solo
+| *+* Aucun.
+| *−* « Considérer le multi » sans le tester laisse passer des choix qui ne marchent pas en réseau (état modifié par le client, objets créés hors de l'hôte).
+
+| Godot
+| *+* `MultiplayerSpawner`, `MultiplayerSynchronizer` et `@rpc` rendent le multi accessible.
+| *+* Un POC suffit pour découvrir ces trois outils.
+|===
+
+Estimation de Claude : 60 % pour A, 40 % pour B. A l'emporte parce que le jeu est multi par nature et que passer du solo au multi coûte cher ; B avait raison sur le risque principal, ne pas finir le projet.
+
+== Racine des scènes d'entité : le corps physique
+
+Contexte:: La roadmap d'origine proposait un `Node3D` racine avec le `CharacterBody3D` / `RigidBody3D` en enfant.
+Décision:: La racine de chaque scène d'entité est le corps physique lui-même (tranché le 31/10/2026).
+Pourquoi:: Avec un `Node3D` parent, c'est l'enfant qui bouge et la racine reste sur place : la position du node principal n'est plus celle de l'objet, ce qui complique le code et la synchronisation réseau.

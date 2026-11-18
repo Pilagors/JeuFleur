@@ -1,0 +1,8 @@
+// Modèle à remplir pour chaque nouvelle fleur.
+* *Lumière* : intensité, forme (halo, cône, pulsation…).
+* *Bruit / discrétion* à l'ouverture.
+* *Pétales* et vitesse d'usure.
+* *Particularité* qui crée une nouvelle décision tactique.
+* *Coût et temps de pousse*, palier de déblocage.
+
+Objectif : comme pour les monstres, chaque fleur doit offrir un vrai compromis, pas juste être « meilleure ».

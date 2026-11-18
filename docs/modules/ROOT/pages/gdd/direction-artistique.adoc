@@ -1,0 +1,31 @@
+= Direction artistique
+
+== Style visé
+
+Low-poly, esthétique « cheap » volontaire et cohérente, dans l'esprit de Lethal Company et REPO : le style simple doit sembler un choix, pas une contrainte technique.
+
+*Rétro-futurisme « cassette »* façon Alien (1979) : écrans CRT, gros boutons, câbles, typographies monospace, logos de corpo fictive. Cheap à produire, très lisible et identitaire.
+
+== Éléments
+
+Personnages::
+Combinaisons rondes et gonflées avec de gros casques à visière, proportions un peu cartoon comme dans REPO. Ragdolls physiques pour les moments drôles.
+
+Palette::
+Station noire et bleu-gris froid ; fleur ouverte dans des couleurs chaudes et organiques (magenta, ambre ou turquoise vif). Le contraste froid / vivant devient la signature du jeu.
+
+Post-processing::
+Grain, légère pixellisation, reflets et buée sur la visière du casque, vignettage, pour masquer la simplicité des modèles et renforcer la tension.
+
+Son::
+Respiration dans le casque, bourdonnement de la station, radio grésillante.
+
+== Pourquoi ça marche pour ce concept
+
+Le contraste entre l'obscurité granuleuse (fleur fermée) et la lumière chaude de la fleur ouverte peut devenir à lui seul la signature visuelle du jeu, sans besoin d'assets détaillés.
+
+== Assets et IA
+
+Aucun asset visible ou audible par le joueur n'est généré par IA. Le pourquoi est dans xref:decisions.adoc[].
+
+NOTE: La palette exacte et les réglages de post-processing restent à fixer avant de produire des assets.

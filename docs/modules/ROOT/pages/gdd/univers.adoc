@@ -1,0 +1,23 @@
+= Univers et fiction
+
+Science-fiction spatiale, ton REPO / Lethal Company.
+Les joueurs partent d'une station orbitale, choisissent un signal de détresse capté (une « émission »), puis atterrissent sur une planète pour explorer une station spatiale abandonnée.
+
+== Pourquoi le concept marche
+
+Le marché du co-op horror « cheap » (Lethal Company, REPO, Content Warning) est en pleine expansion et les joueurs en cherchent constamment de nouveaux.
+Le twist vision contre sécurité donne au jeu une identité propre plutôt qu'un simple clone de scrap.
+Il se prête bien au contenu Twitch/TikTok : moments de panique quand quelqu'un crie dans le micro et attire le monstre.
+
+== Pourquoi la fleur est-elle la seule lumière ?
+
+NOTE: Pas encore tranché. Trois options, combinables entre elles (ex. corpo + champ d'interférence).
+
+Champ d'interférence::
+La station abandonnée émet une interférence (artefact, réacteur instable) qui grille toute l'électronique. Lampes torches, casques et HUD ne marchent pas. Seule une lumière biologique fonctionne.
+
+La fleur vient de cette planète::
+Une corpo a découvert le spécimen, l'a cultivé, puis a perdu contact avec la station. Les joueurs sont des intérimaires envoyés récupérer ce qui reste. La boîte les traite comme du matériel jetable (ton REPO / Lethal Company).
+
+Le monstre et la fleur sont liés::
+Le Traqueur était aveugle à la lumière électrique mais sent la bioluminescence. Mystère à découvrir au fil des runs.

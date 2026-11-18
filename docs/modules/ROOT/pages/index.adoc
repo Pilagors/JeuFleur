@@ -1,0 +1,60 @@
+= JeuFleur
+
+Jeu co-op d'horreur/survie en vue subjective, jusqu'à 4 joueurs en peer-to-peer (un joueur héberge).
+
+Chaque joueur porte une fleur bioluminescente, sa seule source de lumière.
+Ouverte, elle éclaire mais attire le monstre aveugle qui chasse au son.
+Fermée, on est en sécurité mais aveugle.
+Chaque run alterne entre ces deux états selon l'objectif à accomplir.
+
+Univers : science-fiction spatiale. Les joueurs partent d'une station orbitale, choisissent un signal de détresse, puis atterrissent sur une planète pour explorer une station abandonnée.
+
+NOTE: Le nom du jeu n'est pas choisi. « JeuFleur » est un nom de travail. Pistes : _Lumen_, _Hush Station_, _Bloomfall_, _Petal Protocol_, _Dead Signal_, _Spore Shift_.
+
+== Par où commencer
+
+[cols="1,2"]
+|===
+| Je veux… | Page
+
+| installer le projet et le lancer
+| xref:demarrage.adoc[]
+
+| savoir ce qui est prévu et dans quel ordre
+| xref:roadmap.adoc[]
+
+| comprendre le jeu (game design)
+| xref:gdd/univers.adoc[] et les pages suivantes du menu « Game design »
+
+| comprendre l'organisation du code et du réseau
+| xref:architecture.adoc[]
+
+| savoir pourquoi un choix technique a été fait
+| xref:decisions.adoc[]
+
+| retrouver une fonctionnalité et ses fichiers
+| xref:fonctionnalites/index.adoc[]
+
+| connaître les règles de code et de Git
+| xref:guides/conventions.adoc[], xref:guides/git.adoc[]
+|===
+
+== Stack
+
+[cols="1,1,1"]
+|===
+| Moteur | Graphismes | Versionnement
+
+| Godot 4.7.2 (GDScript, Forward+, Jolt)
+| Blender
+| GitHub + Git LFS
+|===
+
+== Prochaines étapes (game design)
+
+* Choisir la fiction qui justifie la fleur (voir xref:gdd/univers.adoc[]).
+* Lister 3 à 5 objectifs de niveau concrets (au-delà du scrap) et les tester rapidement en prototype.
+* Définir précisément ce qui fait du bruit et les seuils de détection du Traqueur (dont le grésillement radio).
+* Prototyper la génération procédurale d'un premier set de modules de station.
+* Fixer la direction artistique (palette, post-processing) avant de produire des assets.
+* Remplir le modèle de monstre pour un 2^e^ ennemi une fois la boucle de base validée par des tests.

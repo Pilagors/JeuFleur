@@ -1,0 +1,8 @@
+name: jeufleur
+title: JeuFleur
+version: ~
+nav:
+- modules/ROOT/nav.adoc
+asciidoc:
+  attributes:
+    url-code: https://github.com/Pilagors/JeuFleur/blob/main

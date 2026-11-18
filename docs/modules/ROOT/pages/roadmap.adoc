@@ -1,0 +1,49 @@
+= Roadmap
+
+Les phases de développement, dans l'ordre.
+Une branche par fonctionnalité, créée depuis `dev` (voir xref:guides/git.adoc[]).
+Quand une fonctionnalité est faite, elle a sa page dans xref:fonctionnalites/index.adoc[].
+
+Ces phases sont pensées pour une équipe dont personne n'a encore fait de jeu : mieux vaut galérer à modifier les choses en cours de route que trop y réfléchir et abandonner.
+
+== Phase 1 : setup de l'environnement
+
+* [x] Créer le dépôt GitHub.
+* [ ] Créer l'arborescence dans Godot (voir xref:architecture.adoc#_arborescence[Architecture]). Les dossiers vides contiennent un `.gitkeep`.
+* [ ] Configurer l'Input Map et les couches de collision (commit `config:`).
+
+== Phase 1 bis : multijoueur
+
+Le multi est intégré dès le départ dans le projet principal, avant le gameplay (voir xref:decisions.adoc#multi-des-le-depart[Décisions]).
+
+* [ ] Héberger / rejoindre en ENet (`NetworkManager`).
+* [ ] Deux joueurs qui se voient bouger.
+
+== Phase 2 : classe Player
+
+* [ ] Scène Player dont la racine est le `CharacterBody3D`, avec un node pour la caméra.
+** La caméra suit la tête du personnage, sûrement attachée au `BoneAttachment3D` de la tête (voir xref:guides/import-modeles-3d.adoc[]).
+** Pour le modèle 3D, prendre un modèle simple au départ.
+* [ ] Script de déplacement attaché au `CharacterBody3D`, avec les actions de l'Input Map.
+* [ ] Attributs proposés (en snake_case, voir xref:guides/conventions.adoc[]) : `stamina`, `health`, `speed`, `jump_height`, `mouse_sensitivity`, `inventory`, `inventory_cursor`.
+
+== Phase 3.1 : classe Item
+
+* [ ] Classe `Item`, utilisée par une scène mère dont les objets concrets héritent.
+* [ ] Scène Item dont la racine est le `RigidBody3D`, avec un `MeshInstance3D` en enfant. La collision peut être générée depuis le `MeshInstance3D` : menu *Mesh → Create Collision Shape*, placement *Sibling*, type *Single Convex* (voir xref:guides/import-modeles-3d.adoc[]).
+
+== Phase 3.2 : classe Inventory
+
+Classe `Inventory` pour toutes les entités qui ont un inventaire (joueur, coffres, monstres…). Elle peut s'appuyer sur une Resource pour être réutilisée.
+
+* [ ] Attributs : `nb_slots: int` (`@export`), `slots` (tableau de `Item` de taille `nb_slots`).
+* [ ] Méthodes :
+** `get_item(index: int) -> Item`
+** `insert_item(item: Item, pos: int = -1) -> bool` : `pos = -1` insère à la première place libre ; renvoie `false` si l'insertion échoue.
+
+Pas de `get()` (déjà défini sur `Object`) ni deux `insert()` (GDScript n'accepte pas deux fonctions du même nom).
+
+== Phase 3 : classe Flower
+
+* [ ] Scène Flower, de type Item, avec `nb_petals` et `wither_time`.
+* [ ] Comportement par états : une classe abstraite `State` avec une méthode `behavior` à implémenter, puis `OpenState` et `CloseState`.

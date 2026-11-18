@@ -1,0 +1,8 @@
+// Modèle à remplir pour chaque nouvelle créature.
+* *Sens exploité* : ouïe, odorat, vibrations au sol, chaleur…
+* *Comportement de chasse* : traque directe, embuscade, patrouille.
+* *Signal qui trahit sa présence* au joueur : bruit, vibration du sol, silhouette furtive.
+* *Contre-mesure spécifique* qui le différencie du Traqueur de base.
+* *Rôle dans la difficulté progressive* : introduit à quel palier.
+
+Objectif : chaque monstre doit introduire une nouvelle décision tactique, pas juste une reskin plus rapide ou plus forte.

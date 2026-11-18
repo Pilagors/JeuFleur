@@ -1,0 +1,24 @@
+* xref:index.adoc[Accueil]
+* xref:demarrage.adoc[Démarrage]
+* xref:roadmap.adoc[Roadmap]
+
+.Game design
+* xref:gdd/univers.adoc[Univers et fiction]
+* xref:gdd/structure-partie.adoc[Structure d'une partie]
+* xref:gdd/boucle-gameplay.adoc[Boucle de gameplay]
+* xref:gdd/objectifs.adoc[Objectifs]
+* xref:gdd/monstres.adoc[Monstres]
+* xref:gdd/fleurs-economie.adoc[Fleurs et économie]
+* xref:gdd/niveaux.adoc[Niveaux]
+* xref:gdd/progression.adoc[Progression et méta-jeu]
+* xref:gdd/direction-artistique.adoc[Direction artistique]
+
+.Technique
+* xref:architecture.adoc[Architecture]
+* xref:decisions.adoc[Décisions]
+* xref:fonctionnalites/index.adoc[Fonctionnalités]
+
+.Guides
+* xref:guides/conventions.adoc[Conventions]
+* xref:guides/git.adoc[Git]
+* xref:guides/import-modeles-3d.adoc[Importer un modèle 3D]

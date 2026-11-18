@@ -1,0 +1,34 @@
+= Boucle de gameplay
+
+== Mécanique centrale : la fleur a deux états
+
+Ouverte::
+Pétales écartées, elle émet de la lumière. Le joueur voit son environnement, mais le monstre (aveugle, guidé par le son et la lumière ambiante) le repère plus facilement et se dirige vers lui.
+
+Fermée::
+Pas de lumière. Le joueur avance à l'aveugle (repères sonores, silhouettes, vibrations) mais reste hors de portée de détection directe.
+
+== Ce qui fait du bruit et attire le monstre
+
+* ouvrir la fleur ;
+* courir ;
+* parler fort dans le micro (voice activity co-op) ;
+* heurter des objets.
+
+À équilibrer pour que la stratégie optimale ne soit pas « tout faire fermé » : certains objectifs doivent forcer à ouvrir la fleur (lire un indice, éviter un piège invisible dans le noir, contrainte de temps).
+
+NOTE: Les seuils exacts (ce qui fait combien de bruit, à quelle distance le Traqueur détecte) restent à définir.
+
+== Voix : deux canaux
+
+NOTE: Idée de mécanique, pas encore validée.
+
+* *Chat de proximité* : discret, passe à travers les casques.
+* *Radio* : permet de parler à longue distance, mais fait grésiller la radio des coéquipiers, et ce grésillement attire les monstres. Vrai choix tactique, et moments de panique garantis quand quelqu'un hurle dans la radio.
+
+== But du run
+
+Objectif variable par niveau, pas de scrap générique. Changer d'objectif à chaque niveau doit donner une sensation d'aventure plutôt qu'une répétition de fetch quests.
+
+Idées à explorer : réparer un mécanisme, activer une séquence de points, escorter ou protéger la fleur elle-même, résoudre une énigme environnementale, extraire un objet fragile qui fait du bruit s'il est secoué.
+Les objectifs déjà imaginés sont dans xref:gdd/objectifs.adoc[].

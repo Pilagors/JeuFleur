@@ -1,0 +1,38 @@
+= Monstres
+
+NOTE: Les noms sont des placeholders.
+
+[cols="1,2,1,2,2"]
+|===
+| Nom | Contexte | Sens | Comportement | Contre-mesure du joueur
+
+| Le Traqueur (monstre de base)
+| Ancien membre d'équipage muté par les spores de la fleur, sans yeux, casque fissuré
+| Aveugle, ouïe fine
+| Se dirige vers la dernière source de bruit ou de lumière perçue. Perd la piste si le joueur reste silencieux, fleur fermée.
+| Fermer la fleur, ne pas courir, rester immobile si le monstre est proche
+
+| Petit alien
+| « Guetteur » natif de la planète, attiré par l'activité, presque mignon (style REPO)
+| Très bonne vue
+| Se dirige vers le joueur et fait du bruit, ce qui attire les autres monstres
+| Peut être mis en fuite avec beaucoup de lumière
+
+| Venom
+| Organisme qui vit dans les conduits d'aération
+| Tous
+| Reste passif, se déplace sur les murs et plafonds
+| Il est effrayé par le joueur
+
+| Android
+| Unité de maintenance en veille, œil rouge qui s'allume lentement comme signal d'alerte
+| Tous
+| Dort, mais se réveille quand un joueur passe assez près
+| Fuir
+|===
+
+== Ajouter un monstre
+
+À remplir pour chaque nouvelle créature :
+
+include::partial$ajouter-monstre.adoc[]

@@ -1,0 +1,31 @@
+= Fonctionnalités
+
+Une page par fonctionnalité implémentée. Chaque page dit ce que fait la fonctionnalité, qui décide en réseau, *et quels fichiers du code l'implémentent* (liens vers GitHub).
+Ce qui est prévu mais pas encore fait est dans xref:roadmap.adoc[].
+
+== Fonctionnalités implémentées
+
+Aucune pour l'instant.
+
+// Ajouter ici un lien par page, dans l'ordre de la roadmap :
+// * xref:fonctionnalites/player.adoc[Player]
+
+== Ajouter une page
+
+. Copier `docs/modules/ROOT/examples/modele-fonctionnalite.adoc` vers `docs/modules/ROOT/pages/fonctionnalites/<nom>.adoc`.
+. La remplir, puis l'ajouter dans la liste ci-dessus et dans `docs/modules/ROOT/nav.adoc`.
+. La commiter avec le code de la fonctionnalité, dans le même commit.
+
+Pour les liens vers le code, utiliser l'attribut `\{url-code}`, qui pointe vers la branche `main` sur GitHub :
+
+[source,asciidoc]
+----
+\{url-code}/entities/player/player.gd[player.gd]
+----
+
+== Modèle
+
+[source,asciidoc]
+----
+include::example$modele-fonctionnalite.adoc[]
+----
